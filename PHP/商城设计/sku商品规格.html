@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <title>商品</title>
+    <!-- http://www.cnblogs.com/purediy/archive/2012/12/02/2798454.html -->
+    <style>
+        .left {
+            width: 800px;
+            float: left;
+        }
+        .right {
+            width: 400px;
+            float: right;
+        }
+        h3 {
+            text-indent: 2em;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+        li img {
+            max-width: 50px;
+            vertical-align: middle;
+        }
+        li input {
+            margin-right: 8px;
+            cursor: pointer;
+
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 5px 20px;
+            margin-bottom: 3px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+        .sku-selected {background:#f44336;}
+        li input:disabled {
+            background: gray;
+            cursor: default;
+        }
+        table, th, td{
+            border: 1px solid black;
+        }
+        table td {
+            padding: 3px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+    </style>
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <div class="left">
+        <h3> 商品id => {{li.id}}</h3>
+        <ul>
+            <li>商品名称: {{li.title}} </li>
+            <li>商品图: <img :src='"http://sjss.mall.dwh027.com/attachment/"+li.thumb'></li>
+            <li>价格: {{li.productprice}}</li>
+            <li>
+                规格:<hr>
+                <ul>
+                    <li v-for='spec in li.spec'>
+                        <div>
+                            {{spec.title}}
+                            <input type="button" v-for="spec_item in spec.spec_item" class="sku" :class="{'sku-selected':skuData.lis[spec_item.id].isChecked}"  @click='selected' :data-id="spec_item.id" :value="spec_item.title+' ('+spec_item.id+')'" :disabled='skuData.lis[spec_item.id].disabled' :title="spec_item.id" />
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                数量: {{ num }} | 价格: {{ price }}
+            </li>
+        </ul>
+        <hr>
+    </div>
+    <div class="right">
+        <table>
+            <caption>商品sku规格表</caption>
+            <thead>
+                <tr>
+                    <th>sku</th>
+                    <th>库存</th>
+                    <th>价格</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for='(s,key) in sku'>
+                    <td>{{ key }}</td>
+                    <td>{{s.stock}}</td>
+                    <td>{{s.costprice}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            li : {"id":"15","uniacid":"2","pcate":"1","ccate":"2","type":"1","status":"0","displayorder":"0","title":"\u6d4b\u8bd5","thumb":"images\/2\/2018\/05\/c3F7ecdv5cC0h77sZe7f78T7Vv8VVV.jpg","unit":"\u4e2a","description":"","content":"","goodssn":"","productsn":"","productprice":"111.00","marketprice":"111.00","costprice":"111.00","originalprice":"0.00","total":"0","totalcnf":"0","sales":"0","salesreal":"0","spec":[{"id":"4","uniacid":"2","goodsid":"15","title":"\u989c\u8272","description":"","displaytype":"0","content":["14","15","16"],"displayorder":"0","propId":"","spec_item":[{"id":"14","uniacid":"2","specid":"4","title":"\u9ed1\u8272","thumb":"","show":"1","displayorder":"0","valueId":"","virtual":"0"},{"id":"15","uniacid":"2","specid":"4","title":"\u84dd\u8272","thumb":"","show":"1","displayorder":"1","valueId":"","virtual":"0"},{"id":"16","uniacid":"2","specid":"4","title":"\u7eff\u8272","thumb":"","show":"1","displayorder":"2","valueId":"","virtual":"0"}]},{"id":"5","uniacid":"2","goodsid":"15","title":"\u5c3a\u7801","description":"","displaytype":"0","content":["17","18","19","20","21"],"displayorder":"1","propId":"","spec_item":[{"id":"17","uniacid":"2","specid":"5","title":"31","thumb":"","show":"1","displayorder":"0","valueId":"","virtual":"0"},{"id":"18","uniacid":"2","specid":"5","title":"32","thumb":"","show":"1","displayorder":"1","valueId":"","virtual":"0"},{"id":"19","uniacid":"2","specid":"5","title":"33","thumb":"","show":"1","displayorder":"2","valueId":"","virtual":"0"},{"id":"20","uniacid":"2","specid":"5","title":"34","thumb":"","show":"1","displayorder":"3","valueId":"","virtual":"0"},{"id":"21","uniacid":"2","specid":"5","title":"35","thumb":"","show":"1","displayorder":"4","valueId":"","virtual":"0"}]}],"createtime":"1531816587","weight":"0.00","credit":"","maxbuy":"0","usermaxbuy":"0","hasoption":"1","dispatch":"0","thumb_url":"a:0:{}","isnew":"0","ishot":"0","isdiscount":"0","isrecommand":"0","issendfree":"0","istime":"0","iscomment":"0","timestart":"1531816440","timeend":"1531816440","viewcount":"0","deleted":"1","hascommission":"0","commission1_rate":"0.00","commission1_pay":"0.00","commission2_rate":"0.00","commission2_pay":"0.00","commission3_rate":"0.00","commission3_pay":"0.00","score":"0.00","taobaoid":"","taotaoid":"","taobaourl":"","updatetime":"0","share_title":"","share_icon":"","cash":"1","commission_thumb":"","isnodiscount":"0","showlevels":"","buylevels":"","showgroups":"","buygroups":"","isverify":"1","storeids":"","noticeopenid":"","tcate":"0","noticetype":"0","needfollow":"0","followtip":"","followurl":"","deduct":"0.00","virtual":"0","ccates":"","discounts":"{\"default\":\"\"}","nocommission":"0","hidecommission":"0","pcates":"","tcates":"","artid":"0","detail_logo":"","detail_shopname":"","detail_btntext1":"","detail_btnurl1":"","detail_btntext2":"","detail_btnurl2":"","detail_totaltitle":"","deduct2":"0.00","ednum":"0","edmoney":"0.00","edareas":"","cates":null,"saleupdate":"0","diyformtype":"0","diyformid":"0","diymode":"0","dispatchtype":"0","dispatchid":"0","dispatchprice":"0.00","manydeduct":"0","shorttitle":"0","supplier_uid":"0"},     // 节点展示
+            json: '',       // json展示
+            sku: {"14_17":{"costprice":"1.00","stock":"16"},"14_18":{"costprice":"2.00","stock":"25"},"14_19":{"costprice":"3.00","stock":"3"},"14_20":{"costprice":"4.00","stock":"12"},"14_21":{"costprice":"5.00","stock":"0"},"15_17":{"costprice":"6.00","stock":"6"},"15_18":{"costprice":"7.00","stock":"0"},"15_19":{"costprice":"8.00","stock":"0"},"15_20":{"costprice":"9.00","stock":"9"},"15_21":{"costprice":"10.00","stock":"10"},"16_17":{"costprice":"11.00","stock":"0"},"16_18":{"costprice":"12.00","stock":"32"},"16_19":{"costprice":"13.00","stock":"14"},"16_20":{"costprice":"14.00","stock":"0"},"16_21":{"costprice":"15.00","stock":"64"}},    //sku结果集
+            skukeys:  [["14","15","16"],["17","18","19","20","21"]],
+            skuData: {
+                lis: [],
+                skuSet: {},
+                selected : [],
+                SKUResult: {}
+            },
+            price: '--',
+            num: '--',
+            SKU : {
+                //获得对象的key
+                getObjKeys: function (obj) {
+                    if (obj !== Object(obj)) throw new TypeError('Invalid object');
+                    var keys = [];
+                    for (var key in obj)
+                        if (Object.prototype.hasOwnProperty.call(obj, key)) // 判断是属性还是方法
+                            keys[keys.length] = key;
+                    return keys;
+                },
+                //把组合的key放入结果集SKUResult
+                add2SKUResult: function (combArrItem, sku) {
+                    // 传入单个sku item
+                    sku.count = parseInt(sku.stock),sku.price = sku.costprice;
+                    var key = combArrItem.join("_");
+                    if(app.skuData.SKUResult[key]) { //SKU信息key属性 "12;32"
+                        app.skuData.SKUResult[key].count += sku.count;  // 数量直接用number相加
+                        app.skuData.SKUResult[key].prices.push(sku.price); // 价格数组push保存
+                    } else {
+                        app.skuData.SKUResult[key] = {
+                            count : sku.count,
+                            prices : [sku.price]
+                        };
+                    }
+                },
+                /**
+                 * 找出数组非空真子集 => 从数组中生成指定长度的组合
+                 * 方法: 先生成[0,1...]形式的数组, 然后根据0,1从原数组取元素，得到组合数组
+                 */
+                combInArray: function (aData) {
+                    if(!aData || !aData.length) {
+                        return [];
+                    }
+
+                    var len = aData.length;
+                    var aResult = [];
+
+                    for(var n = 1; n < len; n++) {
+                        var aaFlags = app.SKU.getCombFlags(len, n);
+                        while(aaFlags.length) {
+                            var aFlag = aaFlags.shift();
+                            var aComb = [];
+                            for(var i = 0; i < len; i++) {
+                                aFlag[i] && aComb.push(aData[i]);
+                            }
+                            aResult.push(aComb);
+                        }
+                    }
+
+                    return aResult;
+                },
+                /**
+                 * 得到从 m 元素中取 n 元素的所有组合
+                 * 结果为[0,1...]形式的数组, 1表示选中，0表示不选
+                 */
+                getCombFlags: function (m, n) {
+                    if(!n || n < 1) {
+                        return [];
+                    }
+
+                    var aResult = [];
+                    var aFlag = [];
+                    var bNext = true;
+                    var i, j, iCnt1;
+
+                    for (i = 0; i < m; i++) {
+                        aFlag[i] = i < n ? 1 : 0;
+                    }
+
+                    aResult.push(aFlag.concat());
+
+                    while (bNext) {
+                        iCnt1 = 0;
+                        for (i = 0; i < m - 1; i++) {
+                            if (aFlag[i] == 1 && aFlag[i+1] == 0) {
+                                for(j = 0; j < i; j++) {
+                                    aFlag[j] = j < iCnt1 ? 1 : 0;
+                                }
+                                aFlag[i] = 0;
+                                aFlag[i+1] = 1;
+                                var aTmp = aFlag.concat();
+                                aResult.push(aTmp);
+                                if(aTmp.slice(-n).join("").indexOf('0') == -1) {
+                                    bNext = false;
+                                }
+                                break;
+                            }
+                            aFlag[i] == 1 && iCnt1++;
+                        }
+                    }
+                    return aResult;
+                },
+                /**
+                 * 检查当前元素是否可以被选中  (根据数组in_array()判断)
+                 * @param  {Array}   selected 当前已经选中的元素数组
+                 * @param  {string}  check    需要检测的当前元素
+                 * @return {boolean}          是否可以被选中
+                 */
+                checkCanSelect: function (selected,check) {
+                    // 假设选中 c3,判断a1是否可以被选中
+                    var count = 0,selects=[];   // 记录包含a1和c3路径组合的总数,若>0,则a1可选
+                    selects = JSON.parse(JSON.stringify(selected));   // 根据数组in array 判断
+                    selects.push(check);
+                    // 判断是否有兄弟节点 check
+                    for ( var i in selects ) {
+                        if ( isSiblings(selects[i],check) ) {
+                            selects.pop();
+                            selects[i] = check;
+                        };
+                    }
+
+                    for ( var skukey in app.skuData.SKUResult ) {
+                        // 路径同时匹配selects和check,则当前sku.count加入计数
+                        var keysArr = skukey.split('_');
+                        if ( arrEquals(keysArr,selects) ) {
+                            count = app.skuData.SKUResult[skukey].count;    // 恰好存在当前路径
+                            break;
+                        };
+                        if ( allInArray(selects,keysArr) ) {
+                            count += app.skuData.SKUResult[skukey].count;   // 满足路径条件,计入总数
+                        };
+                    }
+                    return count>0 ? true: false;
+
+                    // 判断是否都在arrCheck中的每个元素是否都在arrStandard里面
+                    function allInArray(arrCheck,arrStandard){
+                        for ( var i in arrCheck ) {
+                            if ( arrStandard.indexOf(arrCheck[i]) == -1 ) {
+                                return false;
+                            };
+                        }
+                        return true;
+                    }
+                    // 判断两个数组是否相等 (整数值)
+                    function arrEquals(arr1,arr2) {
+                        arr1.sort(function(value1, value2) {
+                            return parseInt(value1) - parseInt(value2);
+                        });
+                        arr2.sort(function(value1, value2) {
+                            return parseInt(value1) - parseInt(value2);
+                        });
+                        return JSON.stringify(arr1) == JSON.stringify(arr2);
+                    }
+                    // 判断是否兄弟节点
+                    function isSiblings(a,b) {
+                        for ( var i in app.skukeys ) {
+                            if ( app.skukeys[i].indexOf(a) != -1 ) {
+                                if ( app.skukeys[i].indexOf(b) != -1 )
+                                    return true;
+                                break;
+                            }
+                        }
+                        return false;
+                    }
+                }
+            },
+        },
+        created: function(){
+            // 设置按钮选项的disabled属性
+            for ( var i in this.skukeys )
+                for ( var j in this.skukeys[i] )
+                    this.skuData.lis[String(this.skukeys[i][j])] = { disabled: false, isChecked: false };
+        },
+        mounted:function() {
+            app = this;
+            this.json = JSON.stringify(this.li,'',4);
+            app.skuSetInit();
+        },
+        methods: {
+            skuSetInit: function(){
+                var app = this;
+                app.skuData.skuSet = {};
+                var keys = app.SKU.getObjKeys(app.sku),key=[],i=0,j=0;
+                for (var i = 0; i < keys.length; i++) {
+                    // 每条sku
+                    var skukey = keys[i];   // sku的key  12_32
+                    var skuval = app.sku[skukey];    // sku的val  { costprice: 15.23, stock: 80 }
+
+                    var skuKeyAttrs = skukey.split("_"); //SKU信息key属性值数组
+                    skuKeyAttrs.sort(function(value1, value2) {  // 排序
+                        return parseInt(value1) - parseInt(value2);
+                    });  // ['12','32']
+
+
+                    // 找出所有非空真子集 => 对每个SKU信息key属性值进行拆分组合
+                    // // combInArray([12,32]) => [['12'],['32']]
+                    // // combInArray([12,32,43]) => [['12'],['32'],['43'],['12','32'],['12','43'],['32','43']]
+                    var combArr = app.SKU.combInArray(skuKeyAttrs);
+                    for(j = 0; j < combArr.length; j++) {
+                        //console.log(combArr[j]); // ['12','43']
+                        // 每个combArr 组合
+                        app.SKU.add2SKUResult(combArr[j], skuval);
+                    }
+
+                    //结果集接放入SKUResult
+                    app.skuData.SKUResult[skuKeyAttrs.join("_")] = {
+                        count:skuval.count,
+                        prices:[skuval.price]
+                    }
+                };
+            },
+            getAllOps: function(){
+
+            },
+            // 不用元素,而是用id
+            selected: function(e){
+                var id = String(e.target.dataset.id),
+                    sbs=siblings(id);
+                if ( attr(id,'isChecked') ) {
+                    // 已经选中 => 取消
+                    setSelected(id,false);
+                } else {
+                    // 没有选中 => 选中,去掉兄弟节点
+                    setSelected(id,true);
+                    for ( var i in sbs ) {
+                        setSelected(sbs[i],false);
+                    }
+                }
+
+                // 已经选择的节点
+                var selectedIds = app.skuData.selected;
+                selectedIds.sort(function(value1, value2) {
+                    return parseInt(value1) - parseInt(value2);
+                });
+                var len = selectedIds.length;
+
+                if ( len ) {
+                    // 已经选择了选项  =>  获得组合key价格
+                    res = app.skuData.SKUResult[selectedIds.join('_')] || {prices:[0],count:0};
+                    var prices = res.prices,count = res.count;
+                    // console.log(prices,count);
+                    var maxPrice = Math.max.apply(Math, prices);
+                    var minPrice = Math.min.apply(Math, prices);
+                    console.log(selectedIds);
+                    app.price = minPrice + '-' + maxPrice + '元';
+                    if ( minPrice==maxPrice ) app.price=minPrice+'元';
+                    app.num = count;
+
+                    // 检测禁用选项  ->  跳过兄弟节点
+                    var sbss = [];   // 返回当前元素及兄弟节点的数组
+                    /*for ( var i in selectedIds ) {
+                        var sbsi = siblings(selectedIds[i],true);
+                        for ( var j in sbsi )
+                            sbss.push(sbsi[j])
+                    }*/
+                    sbss = siblings(id,true);
+                    var ops = getOPs(sbss);    // 获得除兄弟节点的元素
+
+                    // 检测节点是否可选
+                    for ( var i in ops ) {
+                        var r = app.SKU.checkCanSelect(selectedIds,ops[i]);  // 检测每个节点是否可以设为被选
+                        if ( !r ) {
+                            attr(ops[i],'disabled',true);
+                        } else {
+                            attr(ops[i],'disabled',false);
+                        }
+                    }
+                } else {
+                    // // 未选择选项 设置默认价格
+                    app.price = '--';
+                    app.num = '--';
+                    //设置属性状态
+                    for ( var i in app.skuData.lis ) {
+                        attr(i,'isChecked',false);
+                        attr(i,'disabled',false);
+                    }
+                }
+
+                // 找到兄弟节点id
+                function siblings( id, includeSelf ) {
+                    var r = [];
+                    for ( var i in app.skukeys ) {
+                        if ( app.skukeys[i].indexOf(id) != -1 ) {
+                            for ( var j in app.skukeys[i] ) {
+                                if ( app.skukeys[i][j] != id ){
+                                    r.push(app.skukeys[i][j])
+                                } else if ( includeSelf === true ) {
+                                    // 找到节点自身
+                                    r.push(app.skukeys[i][j])
+                                }
+                            }
+                            break;
+                        };
+                    }
+                    return r;
+                }
+                // 设置元素选中
+                function setSelected(id,flag){
+                    if ( typeof flag == 'boolean' ) {
+                        if ( flag ) {
+                            if ( app.skuData.selected.indexOf(id) <0 ){
+                                app.skuData.selected.push(id);
+                                attr(id,'isChecked',true);
+                            }
+                        } else {
+                            if ( app.skuData.selected.indexOf(id) >= 0 ){
+                                arrRemove(app.skuData.selected,id);
+                                attr(id,'isChecked',false);
+                            }
+                        }
+                    };
+                }
+                // 设置元素disabled
+                function attr(id,name,value){
+                    if ( typeof value != 'undefined' ) {
+                        if ( app.skuData.lis[id] ) {
+                            app.skuData.lis[id][name] = value;
+                        };
+                    };
+                    return app.skuData.lis[id][name];
+                }
+                // 删除数组元素 可直接以引用方式改变arr,无须返回
+                function arrRemove(arr,val) {
+                    var index = arr.indexOf(val);
+                    if (index > -1)
+                        arr.splice(index, 1);
+                }
+                // 除去已经选择的元素的所有元素
+                function getOPs () {
+                    var ops = [];
+                    for ( var k in app.skuData.lis ) {
+                        if ( app.skuData.selected.indexOf(k) == -1 )
+                            ops.push(k)  // 没有选择
+                    }
+                    return ops;
+                }
+                // 检测其他选项,置为disabled
+                function checkOptions(){
+
+                }
+            },
+        },
+    });
+</script>
+</body>
+</html>
